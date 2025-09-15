@@ -1,0 +1,7 @@
+{
+  "name": "Akvaryum Yönetim Asistanı",
+  "description": "Akvaryumunuzun su değerlerini, balık sağlığını, bakım takvimini ve daha fazlasını tek bir yerden yönetmenizi sağlayan modern bir web uygulaması.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
