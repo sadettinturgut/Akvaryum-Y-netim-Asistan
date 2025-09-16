@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
   <head>
@@ -7,17 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Akvaryum Yönetim Asistanı</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root, .theme-dark {
+        --color-bg-deep: #0b192f;
+        --color-bg-dark: #112240;
+        --color-bg-light: #233554;
+        --color-accent: #64ffda;
+        --color-text-primary: #ccd6f6;
+        --color-text-secondary: #8892b0;
+      }
+      .theme-neon {
+        --color-bg-deep: #000000;
+        --color-bg-dark: #1a1a1a;
+        --color-bg-light: #2c2c2c;
+        --color-accent: #39ff14; /* Neon Green */
+        --color-text-primary: #e0e0e0;
+        --color-text-secondary: #a0a0a0;
+      }
+      .theme-natural {
+        --color-bg-deep: #f4f1e9; /* Light Beige */
+        --color-bg-dark: #ffffff; /* White */
+        --color-bg-light: #e8e5d9; /* Lighter Beige */
+        --color-accent: #2e7d32; /* Forest Green */
+        --color-text-primary: #3d3522; /* Dark Brown */
+        --color-text-secondary: #7a6e58; /* Muted Brown */
+      }
+    </style>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              'aqua-deep': '#0b192f',
-              'aqua-dark': '#112240',
-              'aqua-light': '#233554',
-              'aqua-accent': '#64ffda',
-              'aqua-text-primary': '#ccd6f6',
-              'aqua-text-secondary': '#8892b0',
+              'aqua-deep': 'var(--color-bg-deep)',
+              'aqua-dark': 'var(--color-bg-dark)',
+              'aqua-light': 'var(--color-bg-light)',
+              'aqua-accent': 'var(--color-accent)',
+              'aqua-text-primary': 'var(--color-text-primary)',
+              'aqua-text-secondary': 'var(--color-text-secondary)',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-in-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0, transform: 'translateY(-10px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' },
+              },
             },
           },
         },

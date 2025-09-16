@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Card from '../ui/Card';
-import { Fish, Aquarium } from '../../types';
-import { getAiFishInfo } from '../../services/geminiService';
+import { Plant, Aquarium } from '../../types';
+import { getAiPlantInfo } from '../../services/geminiService';
 
-interface MyFishProps {
+interface PlantsProps {
     aquarium: Aquarium;
     onUpdateAquarium: (aquarium: Aquarium) => void;
 }
 
-const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
+const Plants: React.FC<PlantsProps> = ({ aquarium, onUpdateAquarium }) => {
     const [showForm, setShowForm] = useState(false);
-    const [newFish, setNewFish] = useState<Omit<Fish, 'id' | 'imageUrl'>>({ name: '', species: '', count: 1, addedDate: new Date().toISOString().split('T')[0], notes: ''});
+    const [newPlant, setNewPlant] = useState<Omit<Plant, 'id' | 'imageUrl'>>({ name: '', species: '', count: 1, addedDate: new Date().toISOString().split('T')[0], notes: ''});
     
     // AI Feature State
     const [aiSearchTerm, setAiSearchTerm] = useState('');
@@ -20,18 +20,18 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
 
     const handleAiFetch = async () => {
         if (!aiSearchTerm.trim()) {
-            setAiError('Lütfen bir balık adı girin.');
+            setAiError('Lütfen bir bitki adı girin.');
             return;
         }
         setAiLoading(true);
         setAiError(null);
         try {
-            const fishInfo = await getAiFishInfo(aiSearchTerm);
-            setNewFish(prev => ({
+            const plantInfo = await getAiPlantInfo(aiSearchTerm);
+            setNewPlant(prev => ({
                 ...prev,
-                name: fishInfo.name,
-                species: fishInfo.species,
-                notes: fishInfo.notes,
+                name: plantInfo.name,
+                species: plantInfo.species,
+                notes: plantInfo.notes,
             }));
             setIsAiDataFetched(true);
         } catch (err: any) {
@@ -44,7 +44,7 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
     const resetForm = () => {
         setShowForm(false);
         setAiSearchTerm('');
-        setNewFish({ name: '', species: '', count: 1, addedDate: new Date().toISOString().split('T')[0], notes: ''});
+        setNewPlant({ name: '', species: '', count: 1, addedDate: new Date().toISOString().split('T')[0], notes: ''});
         setAiLoading(false);
         setAiError(null);
         setIsAiDataFetched(false);
@@ -60,60 +60,59 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setNewFish(prev => ({...prev, [name]: name === 'count' ? parseInt(value) : value }));
+        setNewPlant(prev => ({...prev, [name]: name === 'count' ? parseInt(value) : value }));
     };
 
-    const handleAddFish = (e: React.FormEvent) => {
+    const handleAddPlant = (e: React.FormEvent) => {
         e.preventDefault();
-        const fishToAdd: Fish = {
+        const plantToAdd: Plant = {
             id: Date.now(),
-            ...newFish,
-            imageUrl: `https://via.placeholder.com/150/ccd6f6/0b192f?text=${newFish.name.replace(/\s/g, '+').substring(0,6)}`,
+            ...newPlant,
+            imageUrl: `https://via.placeholder.com/150/4caf50/0b192f?text=${newPlant.name.replace(/\s/g, '+').substring(0,6)}`,
         };
         const updatedAquarium = {
             ...aquarium,
-            fish: [fishToAdd, ...aquarium.fish],
+            plants: [plantToAdd, ...(aquarium.plants || [])],
         };
         onUpdateAquarium(updatedAquarium);
         resetForm();
     };
 
-    const handleDeleteFish = (fishId: number) => {
-        if (window.confirm("Bu balığı silmek istediğinizden emin misiniz?")) {
-            const updatedFishList = aquarium.fish.filter(f => f.id !== fishId);
+    const handleDeletePlant = (plantId: number) => {
+        if (window.confirm("Bu bitkiyi silmek istediğinizden emin misiniz?")) {
+            const updatedPlantsList = (aquarium.plants || []).filter(p => p.id !== plantId);
             const updatedAquarium = {
                 ...aquarium,
-                fish: updatedFishList,
+                plants: updatedPlantsList,
             };
             onUpdateAquarium(updatedAquarium);
         }
     };
 
-
   return (
     <div className="space-y-6">
         <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-aqua-text-primary">{aquarium.name} Sakinleri</h2>
+            <h2 className="text-2xl font-bold text-aqua-text-primary">{aquarium.name} Bitkileri</h2>
             <button
                 onClick={handleToggleForm}
                 className="bg-aqua-accent text-aqua-deep font-bold py-2 px-4 rounded-lg hover:bg-opacity-80 transition-all duration-200"
             >
-                {showForm ? 'İptal' : 'Yeni Balık Ekle'}
+                {showForm ? 'İptal' : 'Yeni Bitki Ekle'}
             </button>
         </div>
 
         {showForm && (
             <Card>
-                <form onSubmit={handleAddFish} className="space-y-4">
+                <form onSubmit={handleAddPlant} className="space-y-4">
                     <div className="space-y-2">
-                        <label htmlFor="ai-search" className="text-sm font-medium text-aqua-text-secondary">Aranacak Balık Adı</label>
+                        <label htmlFor="ai-search" className="text-sm font-medium text-aqua-text-secondary">Aranacak Bitki Adı</label>
                         <div className="flex gap-2">
                             <input
                                 id="ai-search"
                                 type="text"
                                 value={aiSearchTerm}
                                 onChange={(e) => setAiSearchTerm(e.target.value)}
-                                placeholder="Örn: Neon Tetra"
+                                placeholder="Örn: Anubias Nana"
                                 className="flex-grow p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none"
                                 disabled={aiLoading || isAiDataFetched}
                             />
@@ -138,15 +137,15 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
 
                     {isAiDataFetched && (
                         <div className="border-t border-aqua-light pt-4 mt-4 space-y-4 animate-fade-in">
-                            <h3 className="text-lg font-semibold text-aqua-text-primary">Balık Bilgileri</h3>
+                            <h3 className="text-lg font-semibold text-aqua-text-primary">Bitki Bilgileri</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" name="name" placeholder="Balık Adı (örn: Neon Sürü)" value={newFish.name} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
-                                <input type="text" name="species" placeholder="Tür (örn: Paracheirodon innesi)" value={newFish.species} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
-                                <input type="number" name="count" placeholder="Sayı" value={newFish.count} onChange={handleInputChange} required min="1" className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
-                                <input type="date" name="addedDate" value={newFish.addedDate} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
+                                <input type="text" name="name" placeholder="Bitki Adı" value={newPlant.name} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
+                                <input type="text" name="species" placeholder="Tür" value={newPlant.species} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
+                                <input type="number" name="count" placeholder="Sayı" value={newPlant.count} onChange={handleInputChange} required min="1" className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
+                                <input type="date" name="addedDate" value={newPlant.addedDate} onChange={handleInputChange} required className="p-2 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none" />
                             </div>
-                            <textarea name="notes" placeholder="Notlar (davranış, gözlem vb.)" value={newFish.notes} onChange={handleInputChange} className="w-full p-2 h-24 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none"></textarea>
-                            <button type="submit" className="w-full bg-aqua-accent text-aqua-deep font-bold py-2 px-4 rounded-lg hover:bg-opacity-80 transition-all duration-200">Balığı Akvaryuma Ekle</button>
+                            <textarea name="notes" placeholder="Notlar (ışık ihtiyacı, durumu vb.)" value={newPlant.notes} onChange={handleInputChange} className="w-full p-2 h-24 bg-aqua-light rounded-md focus:ring-aqua-accent focus:ring-2 outline-none"></textarea>
+                            <button type="submit" className="w-full bg-aqua-accent text-aqua-deep font-bold py-2 px-4 rounded-lg hover:bg-opacity-80 transition-all duration-200">Bitkiyi Akvaryuma Ekle</button>
                         </div>
                     )}
                 </form>
@@ -154,24 +153,24 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aquarium.fish.map(fish => (
-                 <Card key={fish.id} className="flex flex-col relative group">
-                     <button 
-                        onClick={() => handleDeleteFish(fish.id)}
+            {(aquarium.plants || []).map(plant => (
+                 <Card key={plant.id} className="flex flex-col relative group">
+                    <button 
+                        onClick={() => handleDeletePlant(plant.id)}
                         className="absolute top-3 right-3 bg-red-800/70 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-700"
-                        aria-label="Balığı sil"
+                        aria-label="Bitkiyi sil"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" />
                         </svg>
                     </button>
-                    <img src={fish.imageUrl} alt={fish.name} className="rounded-lg h-40 w-full object-cover mb-4"/>
-                    <h3 className="text-xl font-bold text-aqua-text-primary">{fish.name}</h3>
-                    <p className="text-aqua-accent font-mono text-sm mb-2">{fish.species}</p>
+                    <img src={plant.imageUrl} alt={plant.name} className="rounded-lg h-40 w-full object-cover mb-4"/>
+                    <h3 className="text-xl font-bold text-aqua-text-primary">{plant.name}</h3>
+                    <p className="text-aqua-accent font-mono text-sm mb-2">{plant.species}</p>
                     <div className="text-aqua-text-secondary text-sm space-y-1 mt-auto pt-2">
-                       <p><strong>Sayı:</strong> {fish.count}</p>
-                       <p><strong>Eklenme Tarihi:</strong> {new Date(fish.addedDate).toLocaleDateString('tr-TR')}</p>
-                       {fish.notes && <p className="mt-2 italic">"{fish.notes}"</p>}
+                       <p><strong>Sayı:</strong> {plant.count}</p>
+                       <p><strong>Eklenme Tarihi:</strong> {new Date(plant.addedDate).toLocaleDateString('tr-TR')}</p>
+                       {plant.notes && <p className="mt-2 italic">"{plant.notes}"</p>}
                     </div>
                 </Card>
             ))}
@@ -180,4 +179,4 @@ const MyFish: React.FC<MyFishProps> = ({ aquarium, onUpdateAquarium }) => {
   );
 };
 
-export default MyFish;
+export default Plants;

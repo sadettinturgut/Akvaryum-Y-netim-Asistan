@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '../ui/Card';
 
 const ToggleSwitch: React.FC<{ label: string, enabled: boolean, onChange: (enabled: boolean) => void }> = ({ label, enabled, onChange }) => (
@@ -13,51 +13,33 @@ const ToggleSwitch: React.FC<{ label: string, enabled: boolean, onChange: (enabl
     </div>
 );
 
+type Theme = 'dark' | 'neon' | 'natural';
 
-const Settings: React.FC = () => {
-    const [notifications, setNotifications] = useState({
+interface SettingsProps {
+    theme: Theme;
+    onThemeChange: (theme: Theme) => void;
+}
+
+
+const Settings: React.FC<SettingsProps> = ({ theme, onThemeChange }) => {
+    const [notifications, setNotifications] = React.useState({
         maintenance: true,
         criticalValues: true,
         feedingTime: false,
     });
-    const [theme, setTheme] = useState<'dark' | 'neon' | 'natural'>('dark');
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
-      <Card title="Kullanıcı Profili">
-          <div className="flex items-center space-x-4">
-              <img src="https://i.pravatar.cc/80" alt="User Avatar" className="w-20 h-20 rounded-full"/>
-              <div>
-                  <h3 className="text-xl font-bold text-aqua-text-primary">Akvaryum Meraklısı</h3>
-                  <p className="text-aqua-text-secondary">Toplam Akvaryum Sayısı: 2</p>
-                  <button className="text-sm text-aqua-accent mt-1 hover:underline">Profili Düzenle</button>
-              </div>
-          </div>
-      </Card>
-      
-       <Card title="Akvaryum Profilleri">
-            <p className="text-aqua-text-secondary text-sm mb-3">Akvaryumlarınız arasında geçiş yapabilir ve ayarlarını yönetebilirsiniz.</p>
-            <div className="space-y-2">
-                <div className="flex justify-between items-center p-3 bg-aqua-light rounded-md">
-                    <span className="font-semibold">Tropikal Cennet</span>
-                    <button className="text-xs text-aqua-accent hover:underline">Yönet</button>
-                </div>
-                 <div className="flex justify-between items-center p-3 bg-aqua-light rounded-md">
-                    <span className="font-semibold">Karides Kolonisi</span>
-                    <button className="text-xs text-aqua-accent hover:underline">Yönet</button>
-                </div>
-            </div>
-             <button className="w-full mt-4 text-center py-2 bg-aqua-light hover:bg-opacity-80 rounded-md text-aqua-accent font-semibold">Yeni Akvaryum Ekle</button>
-       </Card>
+      <h1 className="text-2xl font-bold text-aqua-text-primary">Ayarlar</h1>
 
       <Card title="Görünüm ve Tema">
         <div className="space-y-4">
             <div>
                 <label className="block mb-2 text-sm font-medium text-aqua-text-secondary">Tema Seçimi</label>
                 <div className="flex gap-2 sm:gap-4">
-                    <button onClick={() => setTheme('dark')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg ${theme === 'dark' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Karanlık</button>
-                    <button onClick={() => setTheme('neon')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg ${theme === 'neon' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Neon</button>
-                    <button onClick={() => setTheme('natural')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg ${theme === 'natural' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Doğal</button>
+                    <button onClick={() => onThemeChange('dark')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg transition-colors ${theme === 'dark' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Karanlık</button>
+                    <button onClick={() => onThemeChange('neon')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg transition-colors ${theme === 'neon' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Neon</button>
+                    <button onClick={() => onThemeChange('natural')} className={`flex-1 py-2 text-sm sm:text-base rounded-lg transition-colors ${theme === 'natural' ? 'bg-aqua-accent text-aqua-deep' : 'bg-aqua-light'}`}>Doğal</button>
                 </div>
             </div>
             <div>

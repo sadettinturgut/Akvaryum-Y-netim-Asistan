@@ -1,12 +1,21 @@
-import { Aquarium, Achievement } from '../types';
+import { Aquarium, Plant } from '../types';
 
 export const initialAquariums: Aquarium[] = [
     {
         id: 'tropical-paradise',
         name: 'Tropikal Cennet',
+        // Fix: Add missing properties to Aquarium object to match the interface.
+        width: 40, // cm
+        length: 100, // cm
+        height: 50, // cm
+        type: 'Tropikal Tatlı Su',
         fish: [
             { id: 1, name: 'Neon Sürü', species: 'Neon Tetra', count: 15, addedDate: '2023-10-15', imageUrl: 'https://via.placeholder.com/150/64ffda/0b192f?text=Neon', notes: 'Çok aktif ve renkliler.' },
             { id: 2, name: 'L144 Cüce Vatoz', species: 'Ancistrus sp.', count: 2, addedDate: '2023-09-20', imageUrl: 'https://via.placeholder.com/150/8892b0/0b192f?text=Vatoz', notes: 'Geceleri daha aktif oluyorlar.' },
+        ],
+        plants: [
+            { id: 1, name: 'Anubias Nana', species: 'Anubias barteri var. nana', count: 3, addedDate: '2023-10-15', imageUrl: 'https://via.placeholder.com/150/66bb6a/0b192f?text=Anubias', notes: 'Kayalara bağlı.' },
+            { id: 2, name: 'Java Fern', species: 'Microsorum pteropus', count: 2, addedDate: '2023-11-20', imageUrl: 'https://via.placeholder.com/150/4caf50/0b192f?text=JavaFern', notes: 'Kütüğün üzerinde büyüyor.' },
         ],
         waterLogs: [
             { id: 1, date: '2024-05-20', temperature: 25.1, ph: 6.8, tds: 180, no3: 15, kh: 4, gh: 7 },
@@ -44,9 +53,17 @@ export const initialAquariums: Aquarium[] = [
     {
         id: 'shrimp-colony',
         name: 'Karides Kolonisi',
+        // Fix: Add missing properties to Aquarium object to match the interface.
+        width: 30, // cm
+        length: 30, // cm
+        height: 35, // cm
+        type: 'Karides & Salyangoz',
         fish: [
              { id: 3, name: 'Kiraz Karides', species: 'Neocaridina davidi', count: 25, addedDate: '2023-11-01', imageUrl: 'https://via.placeholder.com/150/ff6482/0b192f?text=Karides', notes: 'Sürekli yosunları temizliyorlar.' },
              { id: 4, name: 'Helena Salyangoz', species: 'Anentome helena', count: 5, addedDate: '2023-11-01', imageUrl: 'https://via.placeholder.com/150/fca311/0b192f?text=Helena', notes: 'Adi salyangoz popülasyonunu kontrol ediyorlar.' },
+        ],
+        plants: [
+            { id: 3, name: 'Java Moss', species: 'Taxiphyllum barbieri', count: 1, addedDate: '2023-11-01', imageUrl: 'https://via.placeholder.com/150/81c784/0b192f?text=Moss', notes: 'Karidesler için harika bir saklanma alanı.' },
         ],
         waterLogs: [
              { id: 6, date: '2024-05-20', temperature: 22.5, ph: 7.2, tds: 250, no3: 5, kh: 6, gh: 10 },
@@ -74,14 +91,4 @@ export const initialAquariums: Aquarium[] = [
              { name: 'Yem', value: 250 }, { name: 'Canlı', value: 800 }, { name: 'Aksesuar', value: 300 }
         ]
     }
-];
-
-export const initialAchievements: Achievement[] = [
-    { id: 1, title: 'Hoş Geldin!', description: 'Uygulamayı ilk kez kullandın.', unlocked: true, icon: '🎉' },
-    { id: 2, title: 'İlk Canlı Eklendi', description: 'Akvaryumuna ilk canlı kaydını yaptın.', unlocked: true, icon: '🐠' },
-    { id: 3, title: 'Veri Uzmanı', description: 'İlk su değeri ölçümünü kaydettin.', unlocked: true, icon: '🧪' },
-    { id: 4, title: 'Bakım Günü', description: 'İlk bakım görevini tamamladın.', unlocked: false, icon: '🔧' },
-    { id: 5, title: '3 Ay Sağlıklı Akvaryum', description: 'Akvaryumun 3 ay boyunca stabil kaldı.', unlocked: false, icon: '🏆' },
-    { id: 6, title: 'Yapay Zeka Kâşifi', description: 'AI destekli teşhis özelliğini ilk kez kullandın.', unlocked: false, icon: '🤖' },
-    { id: 7, title: 'İlk Yavru Büyütme', description: 'Akvaryumunda üreme gerçekleşti ve yavruları kaydettin.', unlocked: false, icon: '🐣' },
 ];

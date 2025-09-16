@@ -1,6 +1,7 @@
 export type Page =
   | 'dashboard'
   | 'my-fish'
+  | 'plants'
   | 'water-parameters'
   | 'equipment'
   | 'feeding-plan'
@@ -8,7 +9,6 @@ export type Page =
   | 'disease-guide'
   | 'ai-analysis'
   | 'knowledge-base'
-  | 'achievements'
   | 'reports'
   | 'settings';
 
@@ -52,9 +52,47 @@ export interface KnowledgeBaseArticle {
   }[];
 }
 
+export interface AiFishInfo {
+  name: string;
+  species: string;
+  notes: string;
+}
+
+export interface AiPlantInfo {
+  name: string;
+  species: string;
+  notes: string; // e.g., lighting, CO2 needs
+}
+
+export interface AiHealthReport {
+    score: number;
+    summary: string;
+    positives: string[];
+    recommendations: string[];
+}
+
+// Fix: Add missing Achievement interface
+export interface Achievement {
+    id: number;
+    title: string;
+    description: string;
+    icon: string;
+    unlocked: boolean;
+}
+
 
 // Multi-Aquarium Data Structures
 export interface Fish {
+  id: number;
+  name: string;
+  species: string;
+  count: number;
+  addedDate: string;
+  notes?: string;
+  imageUrl: string;
+}
+
+export interface Plant {
   id: number;
   name: string;
   species: string;
@@ -75,6 +113,13 @@ export interface WaterLog {
   gh: number;
 }
 
+export interface FilterMedium {
+    id: number;
+    name: string;
+    lastChangeDate: string;
+    changeIntervalDays: number;
+}
+
 export interface EquipmentItem {
     id: number;
     name: string;
@@ -84,6 +129,7 @@ export interface EquipmentItem {
     lastMaintenance: string;
     maintenanceIntervalDays: number; // in days
     isTurnedOn?: boolean; // For IoT simulation
+    media?: FilterMedium[];
 }
 
 export interface FeedingScheduleItem {
@@ -123,7 +169,12 @@ export interface Expense {
 export interface Aquarium {
     id: string;
     name: string;
+    width: number; // cm
+    length: number; // cm
+    height: number; // cm
+    type: 'Tropikal Tatlı Su' | 'Bitkili (Aquascape)' | 'Japon Balığı' | 'Ciklet' | 'Karides & Salyangoz' | 'Tuzlu Su Resif';
     fish: Fish[];
+    plants: Plant[];
     waterLogs: WaterLog[];
     equipment: EquipmentItem[];
     feedingSchedule: FeedingScheduleItem[];
@@ -131,12 +182,4 @@ export interface Aquarium {
     maintenanceLogs: MaintenanceLog[];
     upcomingMaintenance: UpcomingMaintenanceTask[];
     expenses: Expense[];
-}
-
-export interface Achievement {
-    id: number;
-    title: string;
-    description: string;
-    unlocked: boolean;
-    icon: string;
 }

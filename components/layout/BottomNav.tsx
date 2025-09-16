@@ -9,7 +9,7 @@ interface BottomNavProps {
 
 const BottomNav: React.FC<BottomNavProps> = ({ activePage, onNavigate }) => {
   // Show only a subset of items on the bottom nav for clarity
-  const navItems = MENU_ITEMS.filter(item => ['dashboard', 'my-fish', 'ai-analysis', 'maintenance', 'disease-guide'].includes(item.id));
+  const navItems = MENU_ITEMS.filter(item => ['dashboard', 'my-fish', 'plants', 'maintenance', 'ai-analysis'].includes(item.id));
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-aqua-dark border-t border-aqua-light shadow-lg z-50">
